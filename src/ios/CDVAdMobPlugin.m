@@ -53,7 +53,6 @@
 
 - (GADAdSize)__AdSizeFromString:(NSString *)str;
 - (GADRequest*) __buildAdRequest:(BOOL)forBanner forDFP:(BOOL)fordfp;
-- (NSString *) __getAdMobDeviceId;
 
 @end
 
@@ -143,7 +142,7 @@
     } else {
         ad = [[GADBannerView alloc] initWithAdSize:self.adSize];
     }
-    
+
     ad.rootViewController = [self getViewController];
     ad.delegate = self;
     ad.adUnitID = adId;
@@ -167,11 +166,6 @@
 
     } else {
         request = [GADRequest request];
-    }
-    if (self.isTesting) {
-        NSString* deviceId = [self __getAdMobDeviceId];
-        request.testDevices = [NSArray arrayWithObjects:deviceId, kGADSimulatorID, nil];
-        NSLog(@"request.testDevices: %@, <Google> tips handled", deviceId);
     }
     if(self.mGender) {
         if( [self.mForChild caseInsensitiveCompare:@"male"] == NSOrderedSame ) request.gender = kGADGenderMale;
@@ -234,12 +228,6 @@
     } else {
         return kGADAdSizeInvalid;
     }
-}
-
-- (NSString *) __getAdMobDeviceId
-{
-    NSUUID* adid = [[ASIdentifierManager sharedManager] advertisingIdentifier];
-    return [self md5:adid.UUIDString];
 }
 
 - (void) __showBanner:(int) position atX:(int)x atY:(int)y

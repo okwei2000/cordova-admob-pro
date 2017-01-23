@@ -76,8 +76,6 @@ enum {
 - (void) prepareRewardVideoAd:(CDVInvokedUrlCommand *)command;
 - (void) showRewardVideoAd:(CDVInvokedUrlCommand *)command;
 
-@property (assign) BOOL testTraffic;
-@property (assign) BOOL licenseValidated;
 @property (assign) BOOL isTesting;
 @property (assign) BOOL logVerbose;
 
@@ -128,9 +126,6 @@ enum {
 - (void) __showBanner:(int) position atX:(int)x atY:(int)y;
 
 - (NSString*) __getProductShortName;
-- (NSString*) __getTestBannerId;
-- (NSString*) __getTestInterstitialId;
-- (NSString*) __getTestRewardVideoId;
 
 - (UIView*) __createAdView:(NSString*)adId;
 - (int) __getAdViewWidth:(UIView*)view;

@@ -153,14 +153,7 @@ extends CordovaPluginExt {
     protected Object rewardVideoAd = null;
     protected boolean bannerVisible = false;
     protected boolean interstitialReady = false;
-    private boolean adlicInited = false;
     private static final String USER_AGENT = "Mozilla/5.0";
-    private final String adlicUrl = "http://adlic.rjfun.com/adlic";
-    private String adlicBannerId = "";
-    private String adlicInterstitialId = "";
-    private String adlicNativeId = "";
-    private String adlicRewardVideoId = "";
-    private int adlicRate = 0;
 
     public boolean execute(String action, JSONArray inputs, CallbackContext callbackContext) throws JSONException {
         PluginResult result = null;
@@ -323,6 +316,9 @@ extends CordovaPluginExt {
 
     public void setOptions(JSONObject options) {
         if (options != null) {
+            if (options.has("isTesting")) {
+                this.isTesting = options.optBoolean("isTesting");
+            }
             if (options.has("logVerbose")) {
                 this.logVerbose = options.optBoolean("logVerbose");
             }
@@ -695,10 +691,6 @@ extends CordovaPluginExt {
 
     protected abstract String __getProductShortName();
 
-    protected abstract String __getTestBannerId();
-
-    protected abstract String __getTestInterstitialId();
-
     protected abstract View __createAdView(String var1);
 
     protected abstract int __getAdViewWidth(View var1);
@@ -720,10 +712,6 @@ extends CordovaPluginExt {
     protected abstract void __showInterstitial(Object var1);
 
     protected abstract void __destroyInterstitial(Object var1);
-
-    protected String __getTestRewardVideoId() {
-        return "";
-    }
 
     protected Object __prepareRewardVideoAd(String adId) {
         return null;

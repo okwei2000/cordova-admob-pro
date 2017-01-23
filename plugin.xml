@@ -41,6 +41,9 @@
         </config-file>
         <source-file src="src/android/AdMobMediation.java" target-dir="src/com/rjfun/cordova/admob" />
         <source-file src="src/android/AdMobPlugin.java" target-dir="src/com/rjfun/cordova/admob" />
+        <source-file src="src/android/GenericAdPlugin.java" target-dir="src/com/rjfun/cordova/ext" />
+        <source-file src="src/android/PluginAdapterDelegate.java" target-dir="src/com/rjfun/cordova/ext" />
+        <source-file src="src/android/CordovaPluginExt.java" target-dir="src/com/rjfun/cordova/ext" />
 
         <!-- cordova CLI using gradle and it working well -->
         <framework src="com.google.android.gms:play-services-ads:+" />
@@ -85,6 +88,11 @@
 
          <header-file src="src/ios/CDVAdMobPlugin.h"/>
          <source-file src="src/ios/CDVAdMobPlugin.m"/>
+         <header-file src="src/ios/GenericAdPlugin.h"/>
+         <source-file src="src/ios/GenericAdPlugin.m"/>
+         <header-file src="src/ios/CDVPluginExt.h"/>
+         <source-file src="src/ios/CDVPluginExt.m"/>
+         <header-file src="src/ios/PluginAdapterDelegate.h"/>
          <header-file src="src/ios/AdMobMediation.h"/>
          <source-file src="src/ios/AdMobMediation.m"/>
          

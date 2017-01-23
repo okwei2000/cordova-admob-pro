@@ -21,8 +21,6 @@
         <clobbers target="window.AdMob" />
     </js-module>
 
-    <dependency id="cordova-plugin-extension" />
-
     <!-- android, now build with gradle instead of ant -->
     <platform name="android">
         <config-file target="AndroidManifest.xml" parent="/manifest/application">

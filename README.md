@@ -36,17 +36,17 @@ From May 2015, Cordova team announced the deprecation of Cordova registry, and s
 ## Features
 
 Platforms supported:
-- [x] Android, via SDK v10.0.1 (part of Google Play service, see [Release Notes](https://developers.google.com/admob/android/rel-notes))
-- [x] iOS, via SDK v7.15.0 (with bitcode support, see [Release Notes](https://developers.google.com/admob/ios/rel-notes))
-- [x] Windows Phone, via SDK v6.5.13 (see [Release Notes](https://developers.google.com/admob/wp/rel-notes))
+- [x] iOS, via SDK v7.37.0 (see [Release Notes](https://developers.google.com/admob/ios/rel-notes))
+- [x] Android, via Android SDK (part of Google Play service, see [Release Notes](https://developers.google.com/admob/android/rel-notes))
 - [x] Amazon-FireOS, via Android SDK (part of Google Play service)
+- [x] Windows Phone, via SDK v6.5.13 (see [Release Notes](https://developers.google.com/admob/wp/rel-notes))
 
 Ad Types:
 - [x] Banner
-- [x] Interstitial (text, picture, video)
-- [x] Reward Video
-- [x] IAP Ad
-- [x] Native Ad (Google new product, on roadmap)
+- [x] Interstitial (text, picture, video), highly recommended. :fire:
+- [x] Reward Video, highly recommended. :fire:
+- [ ] Native Ads (on roadmap)
+- [ ] Native Ads Advanced (on roadmap)
 
 Mediation to other Ad networks:
 * [x] AdMob (built-in)
@@ -107,6 +107,21 @@ Wanna quickly see the mobile ad on your simulator or device? Try the following c
 * If use with Cordova CLI:
 ```bash
 cordova plugin add cordova-plugin-admobpro
+
+cordova plugin add cordova-plugin-admobpro --save --variable PLAY_SERVICES_VERSION=16.0.0 --variable ADMOB_ANDROID_APP_ID="__your_admob_android_app_id___" --variable ADMOB_IOS_APP_ID="__your_admob_ios_app_id___"
+```
+Or, if you see conflict when using Firebase, use this one instead:
+```bash
+cordova plugin add cordova-plugin-admobpro-firebase
+```
+
+* If use with PhoneGap Build:
+```xml
+<preference name="android-build-tool" value="gradle" />
+<preference name="phonegap-version" value="cli-7.1.0" />
+<plugin name="cordova-plugin-admobpro" source="npm">
+<variable name="PLAY_SERVICES_VERSION" value="16.0.0" />
+</plugin>
 ```
 
 If use other tools or online build services, see:
@@ -116,12 +131,14 @@ If use other tools or online build services, see:
 * [x] Google Mobile Chrome App ([How To ...](https://github.com/floatinghotpot/cordova-admob-pro/wiki/05.-How-to-Use-with-Mobile-Chrome-App))
 * [x] Adobe PhoneGap Build. ([How To ...](https://github.com/floatinghotpot/cordova-admob-pro/wiki/00.-How-To-Use-with-PhoneGap-Build))
 * [x] Meteor ([How To ...](https://github.com/floatinghotpot/cordova-admob-pro/wiki/06.-How-To-Use-with-Meteor))
-* [x] Ionic/AngularJS ([In ng-cordova ...](https://github.com/driftyco/ng-cordova/blob/master/src/plugins/googleAds.js), [Inoic Demo](https://github.com/floatinghotpot/admob-ionic-demo/tree/master/demo))
+* [x] Ionic V1, [Ionic V1 Demo](https://github.com/jaivehall/admob-ionic-demo)
+* [x] Ionic, [Ionic Demo](https://github.com/jaivehall/admob-ionic2-demo)
 
-What's difference of the 3 plugin IDs, which one shall I use ?
+What's difference of these plugin IDs, which one shall I use ?
 * com.google.cordova.admob
-* cordova-plugin-admobpro
 * cordova-plugin-admob
+* cordova-plugin-admobpro
+* cordova-plugin-admobpro-firebase
 
 Read: [Difference of Plugin ID](https://github.com/floatinghotpot/cordova-admob-pro/wiki/Difference-of-Plugin-IDs)
 
@@ -189,7 +206,7 @@ Optional mediations to increase your revenue (Read about [AdMob Mediation Networ
 ```bash
 cordova plugin add cordova-plugin-admob-facebook
 cordova plugin add cordova-plugin-admob-flurry
-cordova plugin add cordova-plugin-admob-iad
+cordova plugin add cordova-plugin-admob-unityads
 cordova plugin add cordova-plugin-admob-inmobi
 cordova plugin add cordova-plugin-admob-mmedia
 cordova plugin add cordova-plugin-admob-mobfox
@@ -256,7 +273,8 @@ Other Documentations:
 * [Notice for Android Proguard](https://github.com/floatinghotpot/cordova-admob-pro/wiki/Notice-for-Android-Proguard)
 
 Demo projects:
-* [App demo using Ionic framework](https://github.com/floatinghotpot/admob-demo-app-ionic/tree/master/demo)
+* [App demo for Ionic V1](https://github.com/jaivehall/admob-ionic-demo), by Jaive
+* [App demo for Ionic](https://github.com/jaivehall/admob-ionic2-demo), by Jaive
 * [Game demo using phaser game engine](https://github.com/floatinghotpot/admob-demo-game-phaser/tree/master/demo)
 * [Game demo using PIXI game engine](https://github.com/floatinghotpot/admob-demo-game-pixi/tree/master/demo)
 
@@ -291,8 +309,6 @@ Android Banner | Android Interstitial
 
 Some important tips, FYI.
 
-![Recomended](https://github.com/floatinghotpot/cordova-admob-pro/raw/master/docs/good.png)
-
 - [x] Why Google AdMob is recommended ?
 
 Advertisement is main business and income source of Google, so clients are all around the world. Google is one of the most rialable partners for its high standard service.
@@ -310,17 +326,11 @@ RPM (revenue per 1000 impression) |  US$ 0.5~4 | US$ 10~50
 
 - [x] Using SMART_BANNER to auto-fit the screen width, avoid using BANNER or FULL_BANNER (unless you are using DFP)
 
-![Warning](https://github.com/floatinghotpot/cordova-admob-pro/raw/master/docs/warning.png)
-
 ⚠：Remember Google's slogan: "Don't be evil". Invalid usage violating Google rules, may cause your AdMob account suspended ! 
 
-* AdMob publisher may NOT abuse or encourage abuse any Google products, including Google Play, YouTube or Bolgger, incuding allow user downloading YouTube video, or embed YouTube video in your own apps.
+* AdMob publisher may NOT abuse or encourage abuse any Google products, including Google Play, YouTube or Blogger, incuding allow user downloading YouTube video, or embed YouTube video in your own apps.
 
 * Publishers may NOT click their own ads or use any means to inflate impressions and/or clicks artificially, including manual methods. Testing your own ads by clicking on them is not allowed.
-
-⚠：请记住谷歌的口号：“不作恶”。任何违反合作规范、损害广告商和用户利益的行为，会导致你的 APP 被下架，甚至你的 AdMob 帐号被禁用！
-
-* AdMob发布商不得滥用或鼓励滥用任何Google产品，如Google Play、YouTube或Blogger。这包括规避任何Google产品的政策或条款或提供规避途径，例如允许用户下载YouTube视频等。不得刻意引诱用户点击广告，也不可以在自己的APP中点击广告（测试只能使用非正式的测试广告）。
 
 More details, please read [AdMob & AdSense policies](https://support.google.com/admob/answer/6128543?hl=en&ref_topic=2745287)
 

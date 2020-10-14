@@ -15,9 +15,9 @@
 #import "CDVAdMobPlugin.h"
 #import "AdMobMediation.h"
 
-#define TEST_BANNER_ID           @"ca-app-pub-3940256099942544/4480807092"
+#define TEST_BANNER_ID           @"ca-app-pub-3940256099942544/2934735716"
 #define TEST_INTERSTITIALID      @"ca-app-pub-3940256099942544/4411468910"
-#define TEST_REWARDVIDEOID       @"ca-app-pub-3940256099942544/3995920692"
+#define TEST_REWARDVIDEOID       @"ca-app-pub-3940256099942544/1712485313"
 
 #define OPT_ADCOLONY        @"AdColony"
 #define OPT_ADCOLONY        @"AdColony"
@@ -167,10 +167,11 @@
     } else {
         request = [GADRequest request];
     }
-    if(self.mGender) {
-        if( [self.mForChild caseInsensitiveCompare:@"male"] == NSOrderedSame ) request.gender = kGADGenderMale;
-        else if( [self.mForChild caseInsensitiveCompare:@"female"] == NSOrderedSame ) request.gender = kGADGenderFemale;
-        else  request.gender = kGADGenderMale;
+
+    if (self.isTesting) {
+        NSString* deviceId = [self __getAdMobDeviceId];
+        request.testDevices = [NSArray arrayWithObjects:deviceId, kGADSimulatorID, nil];
+        NSLog(@"request.testDevices: %@, <Google> tips handled", deviceId);
     }
     if(self.mLocation) {
         double lat = [[self.mLocation objectAtIndex:0] doubleValue];

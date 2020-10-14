@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, viewport-fit=cover" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -10,7 +10,7 @@
 <meta name="format-detection" content="telephone=no" />
 
 <!-- to avoid the warning of content security policy -->
-<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src * gap://ready file:; style-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src * 'unsafe-inline' 'unsafe-eval'">
 
 <title>Hello World</title>
 <script>
@@ -77,18 +77,21 @@ button {
   var admobid = {};
   if( /(android)/i.test(navigator.userAgent) ) {
     admobid = { // for Android
-      banner: 'ca-app-pub-6869992474017983/9375997553',
-      interstitial: 'ca-app-pub-6869992474017983/1657046752'
+      banner: 'ca-app-pub-3940256099942544/6300978111',
+      interstitial: 'ca-app-pub-3940256099942544/1033173712',
+      rewardvideo: 'ca-app-pub-3940256099942544/5224354917',
     };
   } else if(/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
     admobid = { // for iOS
-      banner: 'ca-app-pub-6869992474017983/4806197152',
-      interstitial: 'ca-app-pub-6869992474017983/7563979554'
+      banner: 'ca-app-pub-3940256099942544/2934735716',
+      interstitial: 'ca-app-pub-3940256099942544/4411468910',
+      rewardvideo: 'ca-app-pub-3940256099942544/1712485313',
     };
   } else {
-    admobid = { // for Windows Phone
-      banner: 'ca-app-pub-6869992474017983/8878394753',
-      interstitial: 'ca-app-pub-6869992474017983/1355127956'
+    admobid = { // for Windows Phone, deprecated
+      banner: '',
+      interstitial: '',
+      rewardvideo: '',
     };
   }
 
@@ -144,12 +147,34 @@ button {
           ', adEvent:' + data.adEvent); // adType: 'banner', 'interstitial', etc.
     });
     $(document).on('onAdLoaded', function(e){
+        if(typeof e.originalEvent !== 'undefined') e = e.originalEvent;
+        var data = e.data || e;
+
+        if(data.adType === 'interstitial') {
+            $('#h3_full').text('Interstitial Ready');
+            $('#btn_showfull').prop('disabled', false);
+
+        } else if(data.adType === 'rewardvideo') {
+            $('#h3_video').text('Rewarded Video Ready');
+            $('#btn_showvideo').prop('disabled', false);
+        }
     });
     $(document).on('onAdPresent', function(e){
     });
     $(document).on('onAdLeaveApp', function(e){
     });
     $(document).on('onAdDismiss', function(e){
+        if(typeof e.originalEvent !== 'undefined') e = e.originalEvent;
+        var data = e.data || e;
+
+        if(data.adType === 'interstitial') {
+            $('#h3_full').text('Interstitial');
+            $('#btn_showfull').prop('disabled', true);
+
+        } else if(data.adType === 'rewardvideo') {
+            $('#h3_video').text('Rewarded Video');
+            $('#btn_showvideo').prop('disabled', true);
+        }
     });
 
     $('#btn_create').click(createSelectedBanner);
@@ -174,6 +199,18 @@ button {
       AdMob.showInterstitial();
     });
 
+    // test rewarded video ad
+    $('#btn_preparevideo').click(function(){
+      AdMob.prepareRewardVideoAd({
+        adId:admobid.rewardvideo,
+        autoShow: $('#autoshowvideo').is(':checked'),
+      });
+    });
+
+    $('#btn_showvideo').click(function(){
+      AdMob.showRewardVideoAd();
+    });
+
     // test case for #256, https://github.com/floatinghotpot/cordova-admob-pro/issues/256
     $(document).on('backbutton', function(){
       if(window.confirm('Are you sure to quit?')) navigator.app.exitApp();
@@ -191,6 +228,9 @@ button {
   });
 
   $(document).ready(function(){
+    $('#btn_showfull').prop('disabled', true);
+    $('#btn_showvideo').prop('disabled', true);
+
     // on mobile device, we must wait the 'deviceready' event fired by cordova
     if(/(ipad|iphone|ipod|android|windows phone)/i.test(navigator.userAgent)) {
       document.addEventListener('deviceready', onDeviceReady, false);
@@ -202,7 +242,7 @@ button {
 </script>
   <div id="fullpage">
     <p>Demo for AdMob Plugin</p>
-    <h3>Banner</h3>
+    <h3 id='h3_banner'>Banner</h3>
     <input type='checkbox' id='overlap' />overlap
     <input type='checkbox' id='offsetTopBar' />offsetTopBar
     <br/>
@@ -231,10 +271,15 @@ button {
     <button id='btn_hide'>hideBanner</button>
     <hr />
 
-    <h3>Interstitial</h3>
+    <h3 id='h3_full'>Interstitial</h3>
     <input type='checkbox' id='autoshow' checked />auto show when ready<br />
     <button id='btn_prepare'>prepareInterstitial</button>
     <button id='btn_showfull'>showInterstitial</button>
+
+    <h3 id='h3_video'>Rewarded Video</h3>
+    <input type='checkbox' id='autoshowvideo' checked />auto show when ready<br />
+    <button id='btn_preparevideo'>prepareRewardVideoAd</button>
+    <button id='btn_showvideo'>showRewardVideoAd</button>
 
     <p><textarea rows=4 cols=30 id='textinfo'></textarea></p>
 
